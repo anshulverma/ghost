@@ -1,0 +1,4 @@
+ghost
+=====
+
+Game of Ghost
