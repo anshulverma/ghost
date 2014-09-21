@@ -1,0 +1,10 @@
+# IntelliJ IDEA project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Build Artifacts
+.gradle/
+build/
+gradle/
