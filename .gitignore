@@ -5,6 +5,12 @@
 .idea/
 
 # Build Artifacts
-.gradle/
 build/
+
+# Gradle related
+.gradle/
 gradle/
+gradlew.bat
+
+# Log files
+*.log

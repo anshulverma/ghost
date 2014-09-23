@@ -1,0 +1,30 @@
+apply plugin: "spring-boot"
+apply plugin: "war"
+
+mainClassName = "com.mystique.ghost.MvcConfig"
+
+war {
+  baseName = 'ghost'
+  version = '0.0.1'
+}
+
+dependencies {
+  compile project(':core')
+
+//  compile "org.springframework:spring-webmvc:${springVersion}.RELEASE"
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+//  compile("org.springframework.boot:spring-boot-starter-tomcat")
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.6.RELEASE")
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.11'
+}
