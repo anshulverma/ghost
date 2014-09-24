@@ -1,6 +1,8 @@
 package com.mystique.ghost.core.io;
 
+import java.io.Closeable;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -11,13 +13,16 @@ import org.slf4j.LoggerFactory;
 /**
  * @author mystique
  */
-public class TextWordListReader implements WordListReader {
+public class TextWordListReader implements WordListReader, Closeable {
 
   private static final Logger LOG = LoggerFactory.getLogger(TextWordListReader.class);
   private final String filePath;
+  private final Scanner scanner;
 
-  public TextWordListReader(String filePath) {
+  public TextWordListReader(String filePath) throws FileNotFoundException {
     this.filePath = filePath;
+    InputStream inputStream = new FileInputStream(filePath);
+    scanner = new Scanner(inputStream);
   }
 
   @Override
@@ -35,24 +40,26 @@ public class TextWordListReader implements WordListReader {
   }
 
   private Iterator<String> readInternal() throws IOException {
-    try (InputStream inputStream = new FileInputStream(filePath)) {
-      final Scanner scanner = new Scanner(inputStream);
-      return new Iterator<String>() {
-        @Override
-        public boolean hasNext() {
-          return scanner.hasNextLine();
-        }
+    return new Iterator<String>() {
+      @Override
+      public boolean hasNext() {
+        return scanner.hasNextLine();
+      }
 
-        @Override
-        public String next() {
-          return scanner.nextLine();
-        }
+      @Override
+      public String next() {
+        return scanner.nextLine();
+      }
 
-        @Override
-        public void remove() {
-          throw new UnsupportedOperationException("cannot delete words from a word list file");
-        }
-      };
-    }
+      @Override
+      public void remove() {
+        throw new UnsupportedOperationException("cannot delete words from a word list file");
+      }
+    };
+  }
+
+  @Override
+  public void close() {
+    scanner.close();
   }
 }

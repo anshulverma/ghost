@@ -1,5 +1,6 @@
 package com.mystique.ghost.core.model;
 
+import java.io.FileNotFoundException;
 import com.mystique.ghost.core.WordUtils;
 import com.mystique.ghost.core.io.TextWordListReader;
 import com.mystique.ghost.core.io.WordListReader;
@@ -16,13 +17,17 @@ public class WordTreeBuilder {
   }
 
   public WordTree build() {
-    WordListReader reader = new TextWordListReader(wordListFile);
-    TreeNode root = new TreeNode();
-    TreeBuilderContext context = new TreeBuilderContext(root);
-    for (String word : reader.read()) {
-      context.append(word);
+    try {
+      WordListReader reader = new TextWordListReader(wordListFile);
+      TreeNode root = new TreeNode();
+      TreeBuilderContext context = new TreeBuilderContext(root);
+      for (String word : reader.read()) {
+        context.append(word);
+      }
+      return new WordTree(root);
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException("unable to find " + wordListFile);
     }
-    return new WordTree(root);
   }
 
   private class TreeBuilderContext {
