@@ -1,4 +1,4 @@
-package com.mystique.ghost;
+package com.mystique.ghost.web;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

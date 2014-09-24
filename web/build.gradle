@@ -1,7 +1,7 @@
 apply plugin: "spring-boot"
 apply plugin: "war"
 
-mainClassName = "com.mystique.ghost.MvcConfig"
+mainClassName = "com.mystique.ghost.web.MvcConfig"
 
 war {
   baseName = 'ghost'

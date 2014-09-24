@@ -5,4 +5,6 @@ package com.mystique.ghost.core.io;
  */
 public interface WordListReader {
 
+  Iterable<String> read();
+
 }

@@ -1,4 +1,4 @@
-package com.mystique.ghost;
+package com.mystique.ghost.web;
 
 /**
  * @author mystique

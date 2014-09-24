@@ -1,5 +1,7 @@
 package com.mystique.ghost.core.io;
 
+import com.mystique.ghost.core.model.WordTree;
+
 /**
  * @author mystique
  */
