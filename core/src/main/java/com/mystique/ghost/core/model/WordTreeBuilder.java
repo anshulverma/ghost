@@ -1,33 +1,27 @@
 package com.mystique.ghost.core.model;
 
-import java.io.FileNotFoundException;
-import com.mystique.ghost.core.WordUtils;
-import com.mystique.ghost.core.io.TextWordListReader;
 import com.mystique.ghost.core.io.WordListReader;
+import com.mystique.ghost.core.strategy.GameStrategyBuilder;
+import com.mystique.ghost.core.utils.WordUtils;
 
 /**
  * @author mystique
  */
 public class WordTreeBuilder {
 
-  private final String wordListFile;
+  private final WordListReader reader;
 
-  public WordTreeBuilder(String wordListFile) {
-    this.wordListFile = wordListFile;
+  public WordTreeBuilder(WordListReader reader) {
+    this.reader = reader;
   }
 
   public WordTree build() {
-    try {
-      WordListReader reader = new TextWordListReader(wordListFile);
-      TreeNode root = new TreeNode();
-      TreeBuilderContext context = new TreeBuilderContext(root);
-      for (String word : reader.read()) {
-        context.append(word);
-      }
-      return new WordTree(root);
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException("unable to find " + wordListFile);
+    TreeNode root = TreeNode.newRootNode();
+    TreeBuilderContext context = new TreeBuilderContext(root);
+    for (String word : reader.read()) {
+      context.append(word);
     }
+    return new GameStrategyBuilder(new WordTree(root)).build();
   }
 
   private class TreeBuilderContext {
@@ -47,14 +41,15 @@ public class WordTreeBuilder {
       String currentWord = getCurrentWord();
       String commonPrefix = WordUtils.commonPrefix(word, currentWord);
       backtrack(currentWord.length() - commonPrefix.length(), currentWord.length());
-      String suffix = currentWord.substring(commonPrefix.length() + 1);
+      String suffix = word.substring(commonPrefix.length());
       appendSuffix(suffix);
     }
 
     private void appendSuffix(String suffix) {
       TreeNode node = currentNode;
       for (int i = 0; i < suffix.length(); i++) {
-        node = new TreeNode(suffix.charAt(i), node);
+        Character character = suffix.charAt(i);
+        node = node.getOrAddChild(character);
       }
       currentNode = node;
       currentWordBuilder.append(suffix);

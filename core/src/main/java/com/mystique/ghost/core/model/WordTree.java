@@ -10,4 +10,8 @@ public class WordTree {
   public WordTree(TreeNode root) {
     this.root = root;
   }
+
+  public TreeNode getRootNode() {
+    return root;
+  }
 }

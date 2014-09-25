@@ -1,38 +1,120 @@
 package com.mystique.ghost.core.model;
 
+import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.Set;
-import com.google.common.collect.Sets;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author mystique
  */
 public final class TreeNode {
-  private final char value;
-  private final TreeNode parent;
-  private final Set<TreeNode> children = Sets.newHashSet();
+  private static final Character ROOT_NODE_VALUE = '*';
+  private static final Comparator<TreeNode> COMPARATOR = new Comparator<TreeNode>() {
+    @Override
+    public int compare(TreeNode node1, TreeNode node2) {
+      if (node1.winningProbability > node2.winningProbability) {
+        return 1;
+      }
+      return -1;
+    }
+  };
 
-  public TreeNode(char value, TreeNode parent) {
+  private final Character value;
+  private final TreeNode parent;
+  private final double winningProbability;
+  private final SortedHashMap<Character, TreeNode> children = new SortedHashMap<>(COMPARATOR);
+
+  public TreeNode(Character value, TreeNode parent) {
     this.value = value;
     this.parent = parent;
-  }
-
-  public TreeNode() {
-    this('*', null);
+    winningProbability = 0;
   }
 
   public TreeNode getParent() {
     return parent;
   }
 
-  public char getValue() {
+  public Character getValue() {
     return value;
   }
 
-  public boolean isLeaf() {
-    return children.isEmpty();
+  public TreeNode getOrAddChild(Character character) {
+    if (!children.contains(character)) {
+      children.put(character, new TreeNode(character, this));
+    }
+    return children.get(character);
+  }
+
+  public boolean hasChild(Character character) {
+    return children.contains(character);
   }
 
   public boolean isRoot() {
-    return parent == null;
+    return null == parent;
+  }
+
+  public boolean isLeaf() {
+    return children.isEmpty() && !isRoot();
+  }
+
+  @Nullable
+  public TreeNode getChild(Character character) {
+    return children.get(character);
+  }
+
+  public String getPrefix() {
+    if (isRoot()) {
+      return StringUtils.EMPTY;
+    }
+    return parent.getPrefix() + value;
+  }
+
+  public static TreeNode newRootNode() {
+    return new TreeNode(ROOT_NODE_VALUE, null);
+  }
+
+  public Character getTopChild() {
+    return children.getFirst().value;
+  }
+
+  public Set<TreeNode> getChildren() {
+    return children.getValues();
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder()
+      .append(value)
+      .append(parent)
+      .append(children)
+      .toHashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+
+    if (!(obj instanceof TreeNode)) {
+      return false;
+    }
+
+    TreeNode other = (TreeNode) obj;
+    return new EqualsBuilder()
+      .append(value, other.value)
+      .append(parent, other.parent)
+      .append(children, other.parent)
+      .isEquals();
   }
 }
