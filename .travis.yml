@@ -1,0 +1,6 @@
+language: java
+script: ./gradlew clean build --debug
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk7
