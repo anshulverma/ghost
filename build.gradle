@@ -23,5 +23,10 @@ subprojects {
 
     testCompile "org.codehaus.groovy:groovy:2.3.6"
     testCompile "junit:junit:4.11"
+    testCompile "org.hamcrest:hamcrest-all:1.3"
   }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.5'
 }

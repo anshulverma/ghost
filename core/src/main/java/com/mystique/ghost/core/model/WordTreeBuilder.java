@@ -2,13 +2,14 @@ package com.mystique.ghost.core.model;
 
 import com.mystique.ghost.core.io.WordListReader;
 import com.mystique.ghost.core.strategy.GameStrategyBuilder;
-import com.mystique.ghost.core.utils.WordUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author mystique
  */
 public class WordTreeBuilder {
 
+  private static final int MIN_WORD_LENGTH = 4;
   private final WordListReader reader;
 
   public WordTreeBuilder(WordListReader reader) {
@@ -25,43 +26,44 @@ public class WordTreeBuilder {
   }
 
   private class TreeBuilderContext {
-    private TreeNode currentNode;
-    private StringBuilder currentWordBuilder;
+    private final TreeNode root;
 
     public TreeBuilderContext(TreeNode root) {
-      currentNode = root;
-      currentWordBuilder = new StringBuilder();
-    }
-
-    public String getCurrentWord() {
-      return currentWordBuilder.toString();
+      this.root = root;
     }
 
     public void append(String word) {
-      String currentWord = getCurrentWord();
-      String commonPrefix = WordUtils.commonPrefix(word, currentWord);
-      backtrack(currentWord.length() - commonPrefix.length(), currentWord.length());
-      String suffix = word.substring(commonPrefix.length());
-      appendSuffix(suffix);
-    }
+      TreeNode node = root;
 
-    private void appendSuffix(String suffix) {
-      TreeNode node = currentNode;
-      for (int i = 0; i < suffix.length(); i++) {
-        Character character = suffix.charAt(i);
-        node = node.getOrAddChild(character);
+      // only words with atleast `MIN_WORD_LENGTH` are added to the tree
+      if (StringUtils.length(word) < MIN_WORD_LENGTH) {
+        return;
       }
-      currentNode = node;
-      currentWordBuilder.append(suffix);
-    }
 
-    private int backtrack(int count, int length) {
-      if (count == 0) {
-        return length;
+      // find the leftmost letter int he word that already exists in the tree by traversing the tree in sequence
+      int index = 0;
+      for (; index < word.length(); index++) {
+        Character character = word.charAt(index);
+        TreeNode child = node.getChild(character);
+        if (child == null) {
+          break;
+        }
+        node = child;
       }
-      currentNode = currentNode.getParent();
-      currentWordBuilder.deleteCharAt(length - 1);
-      return backtrack(count - 1, length - 1);
+
+      // ignore the word if we found a prefix that itself is a word (eg. "some" and "something")
+      if (node.isLeaf()) {
+        return;
+      }
+
+      // add any characters left in the word
+      for (; index < word.length(); index++) {
+        Character character = word.charAt(index);
+        node = node.addChild(character);
+      }
+
+      // a word should always end at a leaf node
+      node.makeLeaf();
     }
   }
 }

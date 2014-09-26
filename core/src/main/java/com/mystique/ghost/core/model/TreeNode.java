@@ -1,8 +1,8 @@
 package com.mystique.ghost.core.model;
 
-import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Set;
+import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,13 +43,6 @@ public final class TreeNode {
     return value;
   }
 
-  public TreeNode getOrAddChild(Character character) {
-    if (!children.contains(character)) {
-      children.put(character, new TreeNode(character, this));
-    }
-    return children.get(character);
-  }
-
   public boolean hasChild(Character character) {
     return children.contains(character);
   }
@@ -60,6 +53,15 @@ public final class TreeNode {
 
   public boolean isLeaf() {
     return children.isEmpty() && !isRoot();
+  }
+
+  public TreeNode addChild(Character character) {
+    if (children.contains(character)) {
+      throw new IllegalArgumentException("character '" + character + "' already exists in " + getPrefix());
+    }
+    TreeNode child = new TreeNode(character, this);
+    children.put(character, child);
+    return child;
   }
 
   @Nullable
@@ -84,6 +86,10 @@ public final class TreeNode {
 
   public Set<TreeNode> getChildren() {
     return children.getValues();
+  }
+
+  public void makeLeaf() {
+    children.removeAll();
   }
 
   @Override

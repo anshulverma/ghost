@@ -1,21 +1,22 @@
 package com.mystique.ghost.core.model
 
+import org.hamcrest.MatcherAssert
+import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-
 /**
  * @author mystique
  */
 @RunWith(Parameterized.class)
 class WordTreeBuilderTest {
   final WordTree wordTree
-  final int wordCount
+  final String[] expectedWords
 
-  def WordTreeBuilderTest(words, wordCount) {
+  def WordTreeBuilderTest(words, expectedWords) {
     wordTree = new WordTreeBuilder(new MockWordListReader(words)).build()
-    this.wordCount = wordCount
+    this.expectedWords = expectedWords;
   }
 
   @Parameterized.Parameters
@@ -24,19 +25,23 @@ class WordTreeBuilderTest {
         [
           [
             [],
-            0
+            []
           ],
           [
             ["test"],
-            1
+            ["test"]
           ],
           [
             ["aaa", "abcd", "abce", "bcde"],
-            4
+            ["abcd", "abce", "bcde2"]
           ],
           [
-            ["abcd", "abcde", "abc"],
-            1
+            ["abcdefg", "abcd", "abcde", "abc"],
+            ["abcd"]
+          ],
+          [
+            ["abcd", "ghef", "abcde", "abcdef", "gher", "wxyz"],
+            ["abcd", "ghef", "gher", "wxyz"]
           ]
         ]
     Arrays.asList(testCases)
@@ -45,11 +50,24 @@ class WordTreeBuilderTest {
   @Test
   def void 'word tree builder test'() {
     Assert.assertNotNull wordTree.rootNode
-    Assert.assertEquals wordCount, getWordCount(wordTree.rootNode)
+    MatcherAssert.assertThat getWords(), Matchers.containsInAnyOrder(expectedWords)
   }
 
-  def getWordCount(TreeNode node) {
-    def count = node.leaf ? 1 : node.children.sum { TreeNode childNode -> getWordCount(childNode) }
-    count == null ? 0 : count
+  def getWords() {
+    getWords wordTree.rootNode, ""
+  }
+
+  def getWords(node, prefix) {
+    def words = []
+    if (node.leaf) {
+      words << prefix
+    } else {
+      node.children.each {
+        childNode -> getWords(childNode, prefix + childNode.value).each {
+          words << it
+        }
+      }
+    }
+    return words;
   }
 }

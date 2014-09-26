@@ -43,4 +43,11 @@ public class SortedHashMap<K, V> {
   public boolean isEmpty() {
     return map.isEmpty();
   }
+
+  public void removeAll() {
+    for (Map.Entry<K, V> entry : map.entrySet()) {
+      map.remove(entry.getKey());
+      values.remove(entry.getValue());
+    }
+  }
 }
