@@ -14,6 +14,7 @@ gradlew.bat
 
 # Log files
 *.log
+*.log.*
 
 # Temporary files
 *~

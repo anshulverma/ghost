@@ -8,15 +8,17 @@ import com.mystique.ghost.core.model.WordTree;
 import com.mystique.ghost.core.model.WordTreeBuilder;
 import com.mystique.ghost.core.strategy.GameStrategyBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author mystique
  */
 @Configuration
+@ComponentScan
 public class CoreConfig {
 
-  private static final String WORD_LIST_FILE = "a file";
+  private static final String WORD_LIST_FILE = CoreConfig.class.getResource("/wordList.txt").getFile();
 
   @Bean
   public StrategicWordTree createWordTree() throws FileNotFoundException {

@@ -7,15 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Scanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author mystique
  */
 public class TextWordListReader implements WordListReader, Closeable {
-
-  private static final Logger LOG = LoggerFactory.getLogger(TextWordListReader.class);
   private final String filePath;
   private final Scanner scanner;
 

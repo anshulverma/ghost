@@ -5,15 +5,12 @@ mainClassName = "com.mystique.ghost.web.MvcConfig"
 
 war {
   baseName = 'ghost'
-  version = '0.0.1'
 }
 
 dependencies {
   compile project(':core')
 
-//  compile "org.springframework:spring-webmvc:${springVersion}.RELEASE"
   compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-//  compile("org.springframework.boot:spring-boot-starter-tomcat")
 }
 
 buildscript {

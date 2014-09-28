@@ -47,4 +47,8 @@ public class StrategicTreeNode implements Comparable<StrategicTreeNode> {
     }
     return -1;
   }
+
+  public boolean isLeaf() {
+    return children.isEmpty();
+  }
 }
