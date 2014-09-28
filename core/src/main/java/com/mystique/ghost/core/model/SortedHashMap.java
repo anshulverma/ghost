@@ -1,6 +1,5 @@
 package com.mystique.ghost.core.model;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -10,14 +9,10 @@ import com.google.common.collect.Sets;
 /**
  * @author mystique
  */
-public class SortedHashMap<K, V> {
+public class SortedHashMap<K, V extends Comparable> {
 
   private final Map<K, V> map = Maps.newHashMap();
-  private final TreeSet<V> values;
-
-  public SortedHashMap(Comparator<V> valueComparator) {
-    values = Sets.newTreeSet(valueComparator);
-  }
+  private final TreeSet<V> values = Sets.newTreeSet();
 
   public void put(K key, V value) {
     map.put(key, value);

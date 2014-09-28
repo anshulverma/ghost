@@ -1,13 +1,16 @@
 package com.mystique.ghost.core.model;
 
 import com.mystique.ghost.core.io.WordListReader;
-import com.mystique.ghost.core.strategy.GameStrategyBuilder;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author mystique
  */
 public class WordTreeBuilder {
+
+  private static final Logger LOG = LoggerFactory.getLogger(WordTreeBuilder.class);
 
   private static final int MIN_WORD_LENGTH = 4;
   private final WordListReader reader;
@@ -22,7 +25,7 @@ public class WordTreeBuilder {
     for (String word : reader.read()) {
       context.append(word);
     }
-    return new GameStrategyBuilder(new WordTree(root)).build();
+    return new WordTree(root);
   }
 
   private class TreeBuilderContext {
@@ -37,6 +40,7 @@ public class WordTreeBuilder {
 
       // only words with atleast `MIN_WORD_LENGTH` are added to the tree
       if (StringUtils.length(word) < MIN_WORD_LENGTH) {
+        LOG.warn(String.format("ignoring '%s' since its length is too short", word));
         return;
       }
 
@@ -53,6 +57,7 @@ public class WordTreeBuilder {
 
       // ignore the word if we found a prefix that itself is a word (eg. "some" and "something")
       if (node.isLeaf()) {
+        LOG.warn(String.format("ignoring '%s' since its prefix is already present", word));
         return;
       }
 
@@ -62,6 +67,9 @@ public class WordTreeBuilder {
         node = node.addChild(character);
       }
 
+      if (!node.isLeaf()) {
+        LOG.warn(String.format("word '%s' overwrites another since it is a prefix of it", word));
+      }
       // a word should always end at a leaf node
       node.makeLeaf();
     }

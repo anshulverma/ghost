@@ -14,3 +14,10 @@ gradlew.bat
 
 # Log files
 *.log
+
+# Temporary files
+*~
+*#*
+
+# Compiled plots
+plot/*.png

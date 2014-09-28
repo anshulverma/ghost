@@ -33,7 +33,7 @@ class WordTreeBuilderTest {
           ],
           [
             ["aaa", "abcd", "abce", "bcde"],
-            ["abcd", "abce", "bcde2"]
+            ["abcd", "abce", "bcde"]
           ],
           [
             ["abcdefg", "abcd", "abcde", "abc"],

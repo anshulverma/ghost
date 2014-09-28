@@ -1,8 +1,9 @@
 package com.mystique.ghost.core.model;
 
-import java.util.Comparator;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nullable;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,25 +15,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public final class TreeNode {
   private static final Character ROOT_NODE_VALUE = '*';
-  private static final Comparator<TreeNode> COMPARATOR = new Comparator<TreeNode>() {
-    @Override
-    public int compare(TreeNode node1, TreeNode node2) {
-      if (node1.winningProbability > node2.winningProbability) {
-        return 1;
-      }
-      return -1;
-    }
-  };
 
   private final Character value;
   private final TreeNode parent;
-  private final double winningProbability;
-  private final SortedHashMap<Character, TreeNode> children = new SortedHashMap<>(COMPARATOR);
+
+  private Map<Character, TreeNode> children = Maps.newHashMap();
 
   public TreeNode(Character value, TreeNode parent) {
     this.value = value;
     this.parent = parent;
-    winningProbability = 0;
   }
 
   public TreeNode getParent() {
@@ -44,7 +35,7 @@ public final class TreeNode {
   }
 
   public boolean hasChild(Character character) {
-    return children.contains(character);
+    return children.containsKey(character);
   }
 
   public boolean isRoot() {
@@ -56,7 +47,7 @@ public final class TreeNode {
   }
 
   public TreeNode addChild(Character character) {
-    if (children.contains(character)) {
+    if (hasChild(character)) {
       throw new IllegalArgumentException("character '" + character + "' already exists in " + getPrefix());
     }
     TreeNode child = new TreeNode(character, this);
@@ -80,16 +71,12 @@ public final class TreeNode {
     return new TreeNode(ROOT_NODE_VALUE, null);
   }
 
-  public Character getTopChild() {
-    return children.getFirst().value;
-  }
-
-  public Set<TreeNode> getChildren() {
-    return children.getValues();
+  public Collection<TreeNode> getChildren() {
+    return children.values();
   }
 
   public void makeLeaf() {
-    children.removeAll();
+    children = Maps.newHashMap();
   }
 
   @Override
