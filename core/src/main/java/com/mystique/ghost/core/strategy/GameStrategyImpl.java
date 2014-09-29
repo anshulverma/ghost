@@ -14,8 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameStrategyImpl implements GameStrategy {
 
+  private final StrategicWordTree wordTree;
+
   @Autowired
-  private StrategicWordTree wordTree;
+  public GameStrategyImpl(StrategicWordTree wordTree) {
+    this.wordTree = wordTree;
+  }
 
   @Override
   public Character getNext(String prefix)

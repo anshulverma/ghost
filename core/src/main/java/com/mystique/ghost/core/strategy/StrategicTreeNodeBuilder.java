@@ -11,6 +11,7 @@ public final class StrategicTreeNodeBuilder {
   private TreeNode node;
   private Set<StrategicTreeNode> children;
   private double winningProbability;
+  private double averageHeight;
 
   public StrategicTreeNodeBuilder setTreeNode(TreeNode node) {
     this.node = node;
@@ -27,7 +28,12 @@ public final class StrategicTreeNodeBuilder {
     return this;
   }
 
+  public StrategicTreeNodeBuilder setAverageHeight(double averageHeight) {
+    this.averageHeight = averageHeight;
+    return this;
+  }
+
   public StrategicTreeNode build() {
-    return new StrategicTreeNode(node.getValue(), winningProbability, children);
+    return new StrategicTreeNode(node.getValue(), new WinningProbability(winningProbability, averageHeight), children);
   }
 }

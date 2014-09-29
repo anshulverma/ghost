@@ -9,6 +9,7 @@ import com.mystique.ghost.core.model.StrategicWordTree
 import com.mystique.ghost.core.model.WordTreeBuilder
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
+
 /**
  * @author mystique
  */
@@ -31,43 +32,47 @@ class GameStrategyBuilderTest {
                 []
             ],
             [
-                ["test"],
+                ["desk"],
                 [
-                    ""     : 0.8,
-                    "t"    : 0.6,
-                    "te"   : 0.4,
-                    "tes"  : 0.2,
-                    "test" : 0
+                    "desk" : 0,
+                    "des"  : 1.0,
+                    "de"   : 0.2,
+                    "d"    : 1.0
                 ]
             ],
             [
-                ["aaa", "abcd", "abce", "bcde"],
+                ["desk", "destiny"],
                 [
-                    ""   : 0.8,
-                    "a"  : 0.6,
-                    "b"  : 0.6,
-                    "ab" : 0.4
+                    "desk"    : 0,
+                    "destiny" : 0,
+                    "destin"  : 1,
+                    "desti"   : 0.5,
+                    "dest"    : 1,
+                    "des"     : 0.825,
+                    "de"      : 0.775,
+                    "d"       : 0.725
                 ]
             ],
             [
                 ["abcdefg", "abcdert", "abcfgh", "bbcert"],
                 [
-                    ""     : 1.25,
-                    "a"    : 1.1,
-                    "b"    : 1.0,
-                    "bb"   : 0.8,
-                    "abc"  : 0.7,
-                    "abcd" : 0.6
+                    ""     : 0.6125,
+                    "a"    : 0.6321,
+                    "b"    : 0.8928,
+                    "bb"   : 0.3,
+                    "bbc"  : 1,
+                    "abc"  : 0.875,
+                    "abcd" : 0.9192
                 ]
             ],
             [
                 ["abcd", "ghef", "abcde", "abcdef", "gher", "wxyz"],
                 [
-                    ""   : 0.8,
-                    "a"  : 0.6,
-                    "ab" : 0.4,
-                    "wx" : 0.4,
-                    "gh" : 0.4
+                    ""   : 0.3,
+                    "a"  : 0.4833,
+                    "ab" : 0.2,
+                    "wx" : 0.2,
+                    "gh" : 0.2
                 ]
             ]
         ]
@@ -78,11 +83,11 @@ class GameStrategyBuilderTest {
   def void 'strategic word tree builder test'() {
     assertNotNull wordTree
     prefixProbabilitySpecs.each {
-      prefix, expectedProbability ->
+      prefix, double expectedProbability ->
         StrategicTreeNode node = wordTree.traverse prefix
         assertNotNull node
         assertEquals "unexpected probability for prefix '${prefix}'",
-            expectedProbability, node.winningProbability, 0.00001
+            expectedProbability, node.winningProbability.actual, 0.0001
     }
   }
 }

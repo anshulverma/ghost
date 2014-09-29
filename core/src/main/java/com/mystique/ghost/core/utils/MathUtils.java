@@ -7,6 +7,8 @@ import static com.mystique.ghost.core.utils.CollectionUtils.Aggregator;
  * @author mystique
  */
 public final class MathUtils {
+  public static final double MIN_PROBABILITY = 0;
+  public static final double MAX_PROBABILITY = 1;
 
   private MathUtils() { }
 
@@ -29,5 +31,9 @@ public final class MathUtils {
     }
 
     return sum(numbers) / numbers.size();
+  }
+
+  public static double ensureProbabilityRange(double value) {
+    return Double.min(Double.max(value, MIN_PROBABILITY), MAX_PROBABILITY);
   }
 }

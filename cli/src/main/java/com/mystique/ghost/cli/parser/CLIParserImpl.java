@@ -1,6 +1,5 @@
 package com.mystique.ghost.cli.parser;
 
-import com.mystique.ghost.cli.player.PlayerType;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -8,12 +7,11 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import com.mystique.ghost.cli.player.PlayerType;
 
 /**
  * @author mystique
  */
-@Component
 public class CLIParserImpl implements CLIParser {
   private static final String PLAYER_1_LONG_OPT = "player-1";
   private static final String PLAYER_2_LONG_OPT = "player-2";

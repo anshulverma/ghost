@@ -2,15 +2,15 @@ package com.mystique.ghost.core;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import com.mystique.ghost.core.io.TextWordListReader;
 import com.mystique.ghost.core.io.WordListReader;
 import com.mystique.ghost.core.model.StrategicWordTree;
 import com.mystique.ghost.core.model.WordTree;
 import com.mystique.ghost.core.model.WordTreeBuilder;
 import com.mystique.ghost.core.strategy.GameStrategyBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author mystique

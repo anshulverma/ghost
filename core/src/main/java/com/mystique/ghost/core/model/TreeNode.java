@@ -1,8 +1,8 @@
 package com.mystique.ghost.core.model;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
-import javax.annotation.Nullable;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -81,7 +81,11 @@ public final class TreeNode {
 
   @Override
   public String toString() {
-    return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    return new ToStringBuilder(new Object(), ToStringStyle.SHORT_PREFIX_STYLE)
+      .append("value", value)
+      .append("parent", parent)
+      .append("children", children.size())
+      .toString();
   }
 
   @Override
@@ -89,7 +93,6 @@ public final class TreeNode {
     return new HashCodeBuilder()
       .append(value)
       .append(parent)
-      .append(children)
       .toHashCode();
   }
 
@@ -107,7 +110,6 @@ public final class TreeNode {
     return new EqualsBuilder()
       .append(value, other.value)
       .append(parent, other.parent)
-      .append(children, other.parent)
       .isEquals();
   }
 }
