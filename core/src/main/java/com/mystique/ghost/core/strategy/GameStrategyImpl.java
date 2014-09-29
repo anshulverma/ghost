@@ -30,7 +30,8 @@ public class GameStrategyImpl implements GameStrategy {
     }
     StrategicTreeNode nextNode = node.getMostProbableChild();
     if (nextNode.isLeaf()) {
-      throw new WordCompleteException("no more letters after: " + prefix + nextNode.getValue());
+      String word = prefix + nextNode.getValue();
+      throw new WordCompleteException("no more letters after: " + word, word);
     }
     return nextNode.getValue();
   }

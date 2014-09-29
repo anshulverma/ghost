@@ -1,8 +1,8 @@
 package com.mystique.ghost.cli;
 
-import com.mystique.ghost.cli.parser.CLIParser;
 import com.mystique.ghost.cli.parser.GameOptions;
 import com.mystique.ghost.cli.parser.IllegalCLIArgumentException;
+import com.mystique.ghost.cli.parser.ProgrammableParser;
 import com.mystique.ghost.core.CoreConfig;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
@@ -20,21 +20,13 @@ public class Bootstrap {
   private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
 
   @Autowired
-  private CLIParser parser;
-
-  @Autowired
   private GameApplication gameApplication;
 
   public static void main(String[] args) {
-    ApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class, CoreConfig.class);
-    Bootstrap application = context.getBean(Bootstrap.class);
-    application.start(args);
-  }
-
-  private void start(String[] args) {
+    ProgrammableParser parser = new ProgrammableParser();
     try {
       GameOptions options = parser.parse(args);
-      gameApplication.start(options);
+      startApplication(options);
     } catch (ParseException e) {
       LOG.error("unable to parse options", e);
       parser.printUsage();
@@ -43,5 +35,15 @@ public class Bootstrap {
       System.out.println(e.getMessage());
       parser.printUsage();
     }
+  }
+
+  private static void startApplication(GameOptions options) {
+    ApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class, CoreConfig.class);
+    Bootstrap application = context.getBean(Bootstrap.class);
+    application.start(options);
+  }
+
+  private void start(GameOptions options) {
+    gameApplication.start(options);
   }
 }

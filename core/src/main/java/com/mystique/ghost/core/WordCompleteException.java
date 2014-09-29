@@ -5,7 +5,14 @@ package com.mystique.ghost.core;
  */
 public class WordCompleteException extends Exception {
 
-  public WordCompleteException(String message) {
+  private final String word;
+
+  public WordCompleteException(String message, String word) {
     super(message);
+    this.word = word;
+  }
+
+  public String getWord() {
+    return word;
   }
 }

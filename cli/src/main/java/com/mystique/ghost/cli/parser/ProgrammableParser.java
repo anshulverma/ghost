@@ -12,19 +12,18 @@ import com.mystique.ghost.cli.player.PlayerType;
 /**
  * @author mystique
  */
-public class CLIParserImpl implements CLIParser {
+public class ProgrammableParser {
   private static final String PLAYER_1_LONG_OPT = "player-1";
   private static final String PLAYER_2_LONG_OPT = "player-2";
 
   private final Options options;
 
-  public CLIParserImpl() {
+  public ProgrammableParser() {
     this.options = new Options();
     options.addOption("1", PLAYER_1_LONG_OPT, true, "set player 1 to 'human' or 'computer'");
     options.addOption("2", PLAYER_2_LONG_OPT, true, "set player 2 to 'human' or 'computer'");
   }
 
-  @Override
   public GameOptions parse(String[] args) throws ParseException, IllegalCLIArgumentException {
     CommandLineParser parser = new BasicParser();
     CommandLine commandLine = parser.parse(options, args, true);
@@ -33,7 +32,6 @@ public class CLIParserImpl implements CLIParser {
         .build();
   }
 
-  @Override
   public void printUsage() {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("java -jar ghost.jar [options]", options);

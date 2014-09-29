@@ -2,8 +2,8 @@ dependencies {
   compile project(':core')
 
   compile 'commons-cli:commons-cli:1.2'
+  compile 'org.slf4j:slf4j-log4j12:1.7.7'
 }
-
 
 jar {
   baseName = 'ghost'

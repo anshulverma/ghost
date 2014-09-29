@@ -34,6 +34,14 @@ public final class MathUtils {
   }
 
   public static double ensureProbabilityRange(double value) {
-    return Double.min(Double.max(value, MIN_PROBABILITY), MAX_PROBABILITY);
+    return min(max(value, MIN_PROBABILITY), MAX_PROBABILITY);
+  }
+
+  public static double min(double value1, double value2) {
+    return value1 > value2 ? value2 : value1;
+  }
+
+  public static double max(double value1, double value2) {
+    return value1 > value2 ? value1 : value2;
   }
 }

@@ -23,7 +23,7 @@ public class ComputerPlayer implements Player {
     } catch (NoSuchWordException e) {
       System.out.println("There is no such word. I win by default.");
     } catch (WordCompleteException e) {
-      System.out.println("I completed the word. You win!!");
+      System.out.println(String.format("I completed the word '%s'. You win!!", e.getWord()));
     } catch (PrefixWordCompleteException e) {
       System.out.println("You completed the word. I win!!");
     }
