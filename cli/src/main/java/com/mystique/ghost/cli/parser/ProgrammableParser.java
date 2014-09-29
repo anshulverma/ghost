@@ -15,6 +15,7 @@ import com.mystique.ghost.cli.player.PlayerType;
 public class ProgrammableParser {
   private static final String PLAYER_1_LONG_OPT = "player-1";
   private static final String PLAYER_2_LONG_OPT = "player-2";
+  private static final String STARTING_PREFIX = "start-prefix";
 
   private final Options options;
 
@@ -22,6 +23,7 @@ public class ProgrammableParser {
     this.options = new Options();
     options.addOption("1", PLAYER_1_LONG_OPT, true, "set player 1 to 'human' or 'computer'");
     options.addOption("2", PLAYER_2_LONG_OPT, true, "set player 2 to 'human' or 'computer'");
+    options.addOption("s", STARTING_PREFIX, true, "starting prefix of the game");
   }
 
   public GameOptions parse(String[] args) throws ParseException, IllegalCLIArgumentException {
@@ -52,7 +54,13 @@ public class ProgrammableParser {
       GameOptions gameOptions = new GameOptions();
       gameOptions.setPlayer1Type(getPlayerType(PLAYER_1_LONG_OPT, DEFAULT_PLAYER1_TYPE));
       gameOptions.setPlayer2Type(getPlayerType(PLAYER_2_LONG_OPT, DEFAULT_PLAYER2_TYPE));
+      gameOptions.setStartingPrefix(getStartingPrefix());
       return gameOptions;
+    }
+
+    private String getStartingPrefix() {
+      String startingPrefix = commandLine.getOptionValue(STARTING_PREFIX);
+      return startingPrefix == null ? StringUtils.EMPTY : startingPrefix;
     }
 
     private PlayerType getPlayerType(String longOpt, PlayerType defaultType) throws IllegalCLIArgumentException {

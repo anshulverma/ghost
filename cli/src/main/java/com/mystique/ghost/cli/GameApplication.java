@@ -19,12 +19,15 @@ public class GameApplication {
   public void start(GameOptions options) {
     Player player1 = playerFactory.getPlayer(options.getPlayer1Type());
     Player player2 = playerFactory.getPlayer(options.getPlayer2Type());
-    startGame(player1, player2);
+    startGame(player1, player2, options);
   }
 
-  private void startGame(Player player1, Player player2) {
-    StringBuilder currentWord = new StringBuilder();
+  private void startGame(Player player1, Player player2, GameOptions options) {
+    StringBuilder currentWord = new StringBuilder(options.startingPrefix());
     TurnSwitch turnSwitch = new TurnSwitch(player1, player2);
+    if (options.startingPrefix().length() % 2 == 1) {
+      turnSwitch.swithTurns();
+    }
     while (true) {
       String prefix = currentWord.toString();
       if (StringUtils.isNoneBlank(prefix)) {
@@ -65,6 +68,10 @@ public class GameApplication {
 
     public String getPlayerName() {
       return switcher ? "Player2" : "Player1";
+    }
+
+    public void swithTurns() {
+      switcher = !switcher;
     }
   }
 }
