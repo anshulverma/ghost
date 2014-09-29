@@ -10,7 +10,7 @@ buildscript {
 apply plugin: "spring-boot"
 apply plugin: "war"
 
-mainClassName = "com.mystique.ghost.web.MvcConfig"
+mainClassName = "com.mystique.ghost.web.MvcBootstrap"
 
 dependencies {
   compile project(':core')

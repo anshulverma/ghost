@@ -20,6 +20,7 @@ subprojects {
     compile "org.springframework:spring-context:${springVersion}.RELEASE"
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.google.guava:guava:11.0.2'
+    compile 'ch.qos.logback:logback-classic:1.1.2'
 
     testCompile 'org.codehaus.groovy:groovy:2.3.6'
     testCompile 'junit:junit:4.11'

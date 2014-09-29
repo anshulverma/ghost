@@ -28,6 +28,8 @@ public class RandomizingNodeSelector extends AbstractNodeSelector {
   }
 
   private class RangeFilter implements Predicate<StrategicTreeNode> {
+    private static final double MIN_DIFF_THRESHOLD = 0.1;
+
     private final double smallest;
     private final double diff;
     private final DifficultyLevel difficultyLevel;
@@ -40,6 +42,10 @@ public class RandomizingNodeSelector extends AbstractNodeSelector {
 
     @Override
     public boolean apply(StrategicTreeNode node) {
+      if (diff < MIN_DIFF_THRESHOLD) {
+        return true;
+      }
+
       double winningProbability = node.getWinningProbability().getValue(difficultyLevel);
       double scaledProbability = (winningProbability - smallest) / diff;
       return difficultyLevel.getSelectionRange().contains(scaledProbability);
