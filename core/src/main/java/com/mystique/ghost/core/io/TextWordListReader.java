@@ -12,13 +12,14 @@ import java.util.Scanner;
  * @author mystique
  */
 public class TextWordListReader implements WordListReader, Closeable {
-  private final String filePath;
   private final Scanner scanner;
 
-  public TextWordListReader(String filePath) throws FileNotFoundException {
-    this.filePath = filePath;
-    InputStream inputStream = new FileInputStream(filePath);
+  public TextWordListReader(InputStream inputStream) {
     scanner = new Scanner(inputStream);
+  }
+
+  public TextWordListReader(String filePath) throws FileNotFoundException {
+    this(new FileInputStream(filePath));
   }
 
   @Override
@@ -29,7 +30,7 @@ public class TextWordListReader implements WordListReader, Closeable {
         try {
           return readInternal();
         } catch (IOException e) {
-          throw new RuntimeException("unable to read file " + filePath, e);
+          throw new RuntimeException("unable to read file input word list file", e);
         }
       }
     };
