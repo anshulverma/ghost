@@ -3,6 +3,7 @@ package com.mystique.ghost.cli;
 import com.mystique.ghost.cli.parser.GameOptions;
 import com.mystique.ghost.cli.player.Player;
 import com.mystique.ghost.cli.player.PlayerFactory;
+import com.mystique.ghost.cli.player.PlayerType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,11 +24,12 @@ public class GameApplication {
   }
 
   private void startGame(Player player1, Player player2, GameOptions options) {
-    StringBuilder currentWord = new StringBuilder(options.startingPrefix());
-    TurnSwitch turnSwitch = new TurnSwitch(player1, player2);
-    if (options.startingPrefix().length() % 2 == 1) {
+    StringBuilder currentWord = new StringBuilder(options.getStartingPrefix());
+    TurnSwitch turnSwitch = new TurnSwitch(player1, player2, options);
+    if (options.getStartingPrefix().length() % 2 == 1) {
       turnSwitch.swithTurns();
     }
+    printWelcomeMessage(options);
     while (true) {
       String prefix = currentWord.toString();
       if (StringUtils.isNoneBlank(prefix)) {
@@ -43,16 +45,30 @@ public class GameApplication {
     }
   }
 
+  private void printWelcomeMessage(GameOptions options) {
+    System.out.println("Welcome to GHOST!!");
+    System.out.println("Player 1 is " + options.getPlayer1Type().name());
+    if (options.getPlayer1Type() == PlayerType.COMPUTER) {
+      System.out.println("Player 1 is playing at level " + options.getPlayer1Difficulty().name());
+    }
+    System.out.println("Player 2 is " + options.getPlayer2Type().name());
+    if (options.getPlayer2Type() == PlayerType.COMPUTER) {
+      System.out.println("Player 2 is playing at level " + options.getPlayer2Difficulty().name());
+    }
+  }
+
   private static class TurnSwitch {
 
     private final Player player1;
     private final Player player2;
+    private final GameOptions options;
 
     private boolean switcher;
 
-    public TurnSwitch(Player player1, Player player2) {
+    public TurnSwitch(Player player1, Player player2, GameOptions options) {
       this.player1 = player1;
       this.player2 = player2;
+      this.options = options;
 
       switcher = false;
     }
@@ -60,9 +76,9 @@ public class GameApplication {
     public Character playTurn(String prefix) {
       switcher = !switcher;
       if (switcher) {
-        return player1.play(prefix);
+        return player1.play(prefix, options.getPlayer1Difficulty());
       } else {
-        return player2.play(prefix);
+        return player2.play(prefix, options.getPlayer2Difficulty());
       }
     }
 

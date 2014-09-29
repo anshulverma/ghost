@@ -2,6 +2,7 @@ package com.mystique.ghost.cli.player;
 
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import com.mystique.ghost.core.model.DifficultyLevel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class HumanPlayer implements Player {
 
   @Override
-  public Character play(String prefix) {
+  public Character play(String prefix, DifficultyLevel difficultyLevel) {
     while (true) {
       System.out.print("Play next character ('#' if you can't think of anything): ");
       Scanner scanner = new Scanner(new InputStreamReader(System.in));

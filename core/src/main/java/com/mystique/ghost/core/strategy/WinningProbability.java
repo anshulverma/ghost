@@ -1,37 +1,39 @@
 package com.mystique.ghost.core.strategy;
 
+import java.util.Map;
+import com.google.common.collect.Maps;
+import com.mystique.ghost.core.model.DifficultyLevel;
+import com.mystique.ghost.core.utils.MathUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.mystique.ghost.core.utils.MathUtils;
 
 /**
  * @author mystique
  */
-public class WinningProbability implements Comparable<WinningProbability> {
+public class WinningProbability {
 
   private static final double HEIGHT_IMPACT = .05;
 
   private final double averageHeight;
 
-  private double value;
+  private Map<DifficultyLevel, Double> probabilityValues = Maps.newHashMap();
 
-  public WinningProbability(double value, double averageHeight) {
-    this.value = value;
+  public WinningProbability(Map<DifficultyLevel, Double> probabilityValues, double averageHeight) {
+    this.probabilityValues = probabilityValues;
     this.averageHeight = averageHeight;
   }
 
-  @Override
-  public int compareTo(WinningProbability other) {
-    if (getActual() > other.getActual()) {
+  public int compareTo(WinningProbability other, DifficultyLevel difficultyLevel) {
+    if (getActual(difficultyLevel) > other.getActual(difficultyLevel)) {
       return -1;
     }
     return 1;
   }
 
-  double getActual() {
-    double actualValue = value + averageHeight * HEIGHT_IMPACT;
+  double getActual(DifficultyLevel difficultyLevel) {
+    double actualValue = probabilityValues.get(difficultyLevel) + averageHeight * HEIGHT_IMPACT;
     return MathUtils.ensureProbabilityRange(actualValue);
   }
 
@@ -39,18 +41,24 @@ public class WinningProbability implements Comparable<WinningProbability> {
     return averageHeight;
   }
 
-  public double getValue() {
-    return value;
+  public double getValue(DifficultyLevel difficultyLevel) {
+    return probabilityValues.get(difficultyLevel);
   }
 
-  public void scale(double factor) {
+  public void scale(double factor, DifficultyLevel difficultyLevel) {
+    double value = getValue(difficultyLevel);
     value = value * factor;
+    setValue(value, difficultyLevel);
+  }
+
+  private void setValue(double value, DifficultyLevel difficultyLevel) {
+    probabilityValues.put(difficultyLevel, value);
   }
 
   @Override
   public String toString() {
     return new ToStringBuilder(new Object(), ToStringStyle.SHORT_PREFIX_STYLE)
-      .append("value", value)
+      .append("values", probabilityValues)
       .append("averageHeight", averageHeight)
       .toString();
   }
@@ -58,7 +66,7 @@ public class WinningProbability implements Comparable<WinningProbability> {
   @Override
   public int hashCode() {
     return new HashCodeBuilder()
-      .append(value)
+      .append(probabilityValues)
       .append(averageHeight)
       .toHashCode();
   }
@@ -75,7 +83,7 @@ public class WinningProbability implements Comparable<WinningProbability> {
 
     WinningProbability other = (WinningProbability) obj;
     return new EqualsBuilder()
-      .append(value, other.value)
+      .append(probabilityValues, other.probabilityValues)
       .append(averageHeight, other.averageHeight)
       .isEquals();
   }

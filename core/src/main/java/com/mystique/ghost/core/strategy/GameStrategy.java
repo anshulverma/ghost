@@ -1,14 +1,13 @@
 package com.mystique.ghost.core.strategy;
 
-import com.mystique.ghost.core.NoSuchWordException;
-import com.mystique.ghost.core.PrefixWordCompleteException;
-import com.mystique.ghost.core.WordCompleteException;
+import com.mystique.ghost.core.model.CharacterContext;
+import com.mystique.ghost.core.model.DifficultyLevel;
 
 /**
  * @author mystique
  */
 public interface GameStrategy {
 
-  Character getNext(String prefix) throws NoSuchWordException, WordCompleteException, PrefixWordCompleteException;
+  CharacterContext getNext(String prefix, DifficultyLevel difficultyLevel);
 
 }

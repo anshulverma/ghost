@@ -1,6 +1,8 @@
 package com.mystique.ghost.core.strategy;
 
+import java.util.Map;
 import java.util.Set;
+import com.mystique.ghost.core.model.DifficultyLevel;
 import com.mystique.ghost.core.model.StrategicTreeNode;
 import com.mystique.ghost.core.model.TreeNode;
 
@@ -10,7 +12,7 @@ import com.mystique.ghost.core.model.TreeNode;
 public final class StrategicTreeNodeBuilder {
   private TreeNode node;
   private Set<StrategicTreeNode> children;
-  private double winningProbability;
+  private Map<DifficultyLevel, Double> winningProbabilityMap;
   private double averageHeight;
 
   public StrategicTreeNodeBuilder setTreeNode(TreeNode node) {
@@ -23,8 +25,8 @@ public final class StrategicTreeNodeBuilder {
     return this;
   }
 
-  public StrategicTreeNodeBuilder setWinningProbability(double winningProbability) {
-    this.winningProbability = winningProbability;
+  public StrategicTreeNodeBuilder setWinningProbabilityMap(Map<DifficultyLevel, Double> winningProbabilityMap) {
+    this.winningProbabilityMap = winningProbabilityMap;
     return this;
   }
 
@@ -34,6 +36,6 @@ public final class StrategicTreeNodeBuilder {
   }
 
   public StrategicTreeNode build() {
-    return new StrategicTreeNode(node.getValue(), new WinningProbability(winningProbability, averageHeight), children);
+    return new StrategicTreeNode(node.getValue(), new WinningProbability(winningProbabilityMap, averageHeight), children);
   }
 }

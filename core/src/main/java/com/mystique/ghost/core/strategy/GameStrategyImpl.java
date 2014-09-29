@@ -1,10 +1,14 @@
 package com.mystique.ghost.core.strategy;
 
 import com.mystique.ghost.core.NoSuchWordException;
-import com.mystique.ghost.core.PrefixWordCompleteException;
-import com.mystique.ghost.core.WordCompleteException;
+import com.mystique.ghost.core.model.CharacterContext;
+import com.mystique.ghost.core.model.DifficultyLevel;
 import com.mystique.ghost.core.model.StrategicTreeNode;
 import com.mystique.ghost.core.model.StrategicWordTree;
+import com.mystique.ghost.core.strategy.selector.NodeSelector;
+import com.mystique.ghost.core.strategy.selector.NodeSelectorBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameStrategyImpl implements GameStrategy {
 
+  private static final Logger LOG = LoggerFactory.getLogger(GameStrategyImpl.class);
+
   private final StrategicWordTree wordTree;
 
   @Autowired
@@ -22,17 +28,18 @@ public class GameStrategyImpl implements GameStrategy {
   }
 
   @Override
-  public Character getNext(String prefix)
-      throws NoSuchWordException, WordCompleteException, PrefixWordCompleteException {
-    StrategicTreeNode node = wordTree.traverse(prefix);
-    if (node.isLeaf()) {
-      throw new PrefixWordCompleteException("no more letters after: " + prefix);
+  public CharacterContext getNext(String prefix, DifficultyLevel difficultyLevel) {
+    try {
+      StrategicTreeNode node = wordTree.traverse(prefix);
+      if (node.isLeaf()) {
+        return CharacterContext.NULL;
+      }
+      NodeSelector selector = new NodeSelectorBuilder().setDifficultyLevel(difficultyLevel).build();
+      StrategicTreeNode nextNode = node.getChild(selector);
+      return new CharacterContext(nextNode.getValue(), nextNode.isLeaf());
+    } catch (NoSuchWordException e) {
+      LOG.warn("no word found with prefix: " + prefix);
+      return CharacterContext.INVALID;
     }
-    StrategicTreeNode nextNode = node.getMostProbableChild();
-    if (nextNode.isLeaf()) {
-      String word = prefix + nextNode.getValue();
-      throw new WordCompleteException("no more letters after: " + word, word);
-    }
-    return nextNode.getValue();
   }
 }

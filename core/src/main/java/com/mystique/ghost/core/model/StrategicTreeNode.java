@@ -1,26 +1,29 @@
 package com.mystique.ghost.core.model;
 
+import java.util.Collection;
 import java.util.Set;
+import com.mystique.ghost.core.NoSuchWordException;
+import com.mystique.ghost.core.strategy.selector.NodeSelector;
+import com.mystique.ghost.core.strategy.WinningProbability;
+import com.mystique.ghost.core.utils.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.mystique.ghost.core.NoSuchWordException;
-import com.mystique.ghost.core.strategy.WinningProbability;
 
 /**
  * @author mystique
  */
-public class StrategicTreeNode implements Comparable<StrategicTreeNode> {
+public class StrategicTreeNode {
   private final Character value;
-  private final SortedHashMap<Character, StrategicTreeNode> children;
+  private final SortedChildrenMap children;
   private final WinningProbability winningProbability;
 
   public StrategicTreeNode(Character value, WinningProbability winningProbability, Set<StrategicTreeNode> childrenNodes) {
     this.value = value;
     this.winningProbability = winningProbability;
 
-    children = new SortedHashMap<>();
+    children = new SortedChildrenMap();
     for (StrategicTreeNode node : childrenNodes) {
       children.put(node.value, node);
     }
@@ -37,17 +40,17 @@ public class StrategicTreeNode implements Comparable<StrategicTreeNode> {
     return children.get(character);
   }
 
+  public StrategicTreeNode getChild(NodeSelector selector) {
+    Collection<StrategicTreeNode> filtered = selector.apply(children.getValues(selector.getDifficultyLevel()));
+    return CollectionUtils.selectRandom(filtered);
+  }
+
   public Character getValue() {
     return value;
   }
 
-  public StrategicTreeNode getMostProbableChild() {
-    return children.getFirst();
-  }
-
-  @Override
-  public int compareTo(StrategicTreeNode other) {
-    return winningProbability.compareTo(other.getWinningProbability());
+  public StrategicTreeNode getMostProbableChild(DifficultyLevel difficultyLevel) {
+    return children.getFirst(difficultyLevel);
   }
 
   public boolean isLeaf() {

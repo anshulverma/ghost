@@ -44,4 +44,8 @@ public final class MathUtils {
   public static double max(double value1, double value2) {
     return value1 > value2 ? value1 : value2;
   }
+
+  public static int randomInt(int max) {
+    return (int) ((Math.random() * 1000) % max);
+  }
 }

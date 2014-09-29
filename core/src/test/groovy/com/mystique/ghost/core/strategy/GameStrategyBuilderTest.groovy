@@ -3,6 +3,7 @@ package com.mystique.ghost.core.strategy
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import com.mystique.ghost.core.model.DifficultyLevel
 import com.mystique.ghost.core.model.MockWordListReader
 import com.mystique.ghost.core.model.StrategicTreeNode
 import com.mystique.ghost.core.model.StrategicWordTree
@@ -17,10 +18,12 @@ import static org.junit.Assert.assertNotNull
 class GameStrategyBuilderTest {
   final StrategicWordTree wordTree
   final prefixProbabilitySpecs
+  final difficultyLevel
 
-  def GameStrategyBuilderTest(words, prefixProbabilitySpecs) {
+  def GameStrategyBuilderTest(words, prefixProbabilitySpecs, difficultyLevel) {
     wordTree = new GameStrategyBuilder(new WordTreeBuilder(new MockWordListReader(words)).build()).build()
     this.prefixProbabilitySpecs = prefixProbabilitySpecs;
+    this.difficultyLevel = difficultyLevel;
   }
 
   @Parameterized.Parameters
@@ -29,16 +32,18 @@ class GameStrategyBuilderTest {
         [
             [
                 [],
-                []
+                [],
+                DifficultyLevel.VERY_HARD
             ],
             [
                 ["desk"],
                 [
                     "desk" : 0,
                     "des"  : 1.0,
-                    "de"   : 0.2,
+                    "de"   : 0.15,
                     "d"    : 1.0
-                ]
+                ],
+                DifficultyLevel.VERY_HARD
             ],
             [
                 ["desk", "destiny"],
@@ -46,34 +51,37 @@ class GameStrategyBuilderTest {
                     "desk"    : 0,
                     "destiny" : 0,
                     "destin"  : 1,
-                    "desti"   : 0.5,
+                    "desti"   : 0.3,
                     "dest"    : 1,
                     "des"     : 0.825,
-                    "de"      : 0.775,
-                    "d"       : 0.725
-                ]
+                    "de"      : 0.625,
+                    "d"       : 0.775
+                ],
+                DifficultyLevel.VERY_HARD
             ],
             [
                 ["abcdefg", "abcdert", "abcfgh", "bbcert"],
                 [
-                    ""     : 0.6125,
-                    "a"    : 0.6321,
-                    "b"    : 0.8928,
-                    "bb"   : 0.3,
+                    ""     : 0.675,
+                    "a"    : 0.6475,
+                    "b"    : 0.8774,
+                    "bb"   : 0.4,
                     "bbc"  : 1,
-                    "abc"  : 0.875,
-                    "abcd" : 0.9192
-                ]
+                    "abc"  : 0.8,
+                    "abcd" : 1
+                ],
+                DifficultyLevel.VERY_HARD
             ],
             [
                 ["abcd", "ghef", "abcde", "abcdef", "gher", "wxyz"],
                 [
-                    ""   : 0.3,
+                    ""   : 0.25,
                     "a"  : 0.4833,
-                    "ab" : 0.2,
-                    "wx" : 0.2,
-                    "gh" : 0.2
-                ]
+                    "ab" : 0.15,
+                    "wx" : 0.15,
+                    "gh" : 0.15
+                ],
+                DifficultyLevel.VERY_HARD
             ]
         ]
     Arrays.asList(testCases)
@@ -87,7 +95,7 @@ class GameStrategyBuilderTest {
         StrategicTreeNode node = wordTree.traverse prefix
         assertNotNull node
         assertEquals "unexpected probability for prefix '${prefix}'",
-            expectedProbability, node.winningProbability.actual, 0.0001
+            expectedProbability, node.winningProbability.getActual(difficultyLevel), 0.0001
     }
   }
 }
