@@ -1,4 +1,5 @@
 function getNextLetter() {
+    disableButton();
     if (gameState === END) {
         print('Game finished. Hit reset for new game.');
         return;
@@ -20,8 +21,6 @@ function getNextLetter() {
         if (data.status === 'COMPLETE') {
             print('I completed the word. You win!!');
             gameState = END;
-        } else if (data.status === 'SUCCESS') {
-            print('');
         }
     });
 }
@@ -30,11 +29,32 @@ function print(text) {
     $('#result').append("<div>" + text + "</div>")
 }
 
-function reset() {
+var reset = function() {
     $("#wordInput").val('');
     $('#result').html('');
+    if (gameState != INIT) {
+        enableButton();
+    }
     gameState = PLAYING;
-}
-reset();
+};
+
+$(document).ready(function() {
+    reset();
+    $('#wordInput').keyup(function() {
+        enableButton();
+    });
+    $('#nextLetter').click(getNextLetter);
+});
+
+var disableButton = function() {
+    $('#nextLetter').prop('disabled', true);
+};
+
+var enableButton = function() {
+    $('#nextLetter').removeAttr('disabled');
+};
+
+var INIT = 0;
 var END = 1;
 var PLAYING = 2;
+var gameState = INIT;
