@@ -270,7 +270,7 @@ hard to port it to various other platforms too.
 
 ## Author
 
-[Anju Suryawanshi][http://anjusuryawanshi.com/]
+[Anju Suryawanshi](http://anjusuryawanshi.com/)
 [github](https://github.com/anjusuryawanshi)
 
 ## License
