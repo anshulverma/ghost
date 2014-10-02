@@ -37,10 +37,10 @@ ghost
 
 The game of ghost is usually a written or spoken word game in which
 players take turns adding letters to a growing word fragment, trying not
-to be the one to complete a valid word. A minimum length of word is set
-to 4 letters for words that count. The player that completes a word
-looses the round and earns a "letter". A player gets eliminated when
-they have received all five letters of the word `ghost`.
+to be the one to complete a valid word. A minimum length of a word is
+set to 4 letters for words that count in the game. The player that
+completes a word looses the round and earns a "letter". A player gets
+eliminated when they have received all five letters of the word `ghost`.
 
 ## Winning Strategy
 
@@ -79,10 +79,10 @@ I implemented in this application.
 ### Decision Tree
 
 A decision tree is a tool to support and validate decision making
-with. In terms of probability theory, it would tell you the chance of
+with. In terms of probability theory, it will tell you the chance of
 outcome A vs outcome B given certain parameters.
 
-In the game of ghost, we have build a
+In the game of ghost, this implementation builds a
 [trie][http://en.wikipedia.org/wiki/Trie] like data structure which
 servers as a decision tree for us. Every node of this tree has these
 properties:
@@ -108,7 +108,9 @@ follow the branch with highest depth_. This is not the case since we
 have to assume that the opponent also plays optimally. Consider this
 example:
 
-![Optimal child node selection](https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/optimal-child.png "Optimal Child Node")
+<div style="width:100%;text-align:center;">
+  <img src="https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/optimal-child.png" alt="Optimal child node selection" style="width:10%;">
+</div>
 
 Let's assume the opponent plays the letter `a`. Now, as per the decision
 tree, there are two options for us to choose from, `c` or `d`. Based on
@@ -122,9 +124,9 @@ In the approach, the rule of thumb is _there is always a chance, however
 small it may be, that you will win unless you complete a word_. This is
 explained more clearly by this equation:
 
-![Probability Equation](https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/equations.png "Probability Equation")
-
-_legend_:
+<div style="width:100%;text-align:center;">
+  <img src="https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/equations.png" alt="Probability Equation" style="width:30%;">
+</div>
 
 |_Symbol_         |Definition                                                                                            |
 |-----------------|------------------------------------------------------------------------------------------------------|
@@ -169,7 +171,9 @@ will select a node `n` out of several possible candidates. One might
 argue that a opponent is more likely to select a node that will yield
 him or her victory. This can be visualized using this graph:
 
-![Probability of Selection](https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/chances-of-selection.png "Probability of Selection")
+<div style="width:100%;text-align:center;">
+  <img src="https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/chances-of-selection.png" alt="Probability of Selection" style="width:40%;">
+</div>
 
 #### Difficulty factors _D<sub>k</sub>_ and _D<sub>h</sub>_
 
@@ -248,7 +252,7 @@ of these are located on the build directories of the respective modules.
 
 ## Ideas for improvement
 
-There is always room for improvement
+There is always room for improvement.
 
 ### Challenge system
 
@@ -257,11 +261,13 @@ I mentioned how this works in the game, but, we it is not implemented yet.
 ### Learn from wikipedia
 
 One thought is to not assign same _P<sub>k</sub>_ to every node with
-same _d(n)_ value, but, rather make it more realistic. For example, a
-lot of people know a 9 letter word like `"something"`, but, its
-_P<sub>k</sub>_ will not be indicative of this. To be more realistic,
-one can run a `map-reduce` task on the all of wikipedia to find out
-common words (wikipedia provides a monthly dump of its database).
+same _d(n)_ value, but, rather make it more realistic by figuring out
+this value from real data. For example, a lot of people know a 9 letter
+word like `"something"`, but, its _P<sub>k</sub>_ will not be indicative
+of this since it will be similar to `archivist`, a not so popular
+word. To get realistic data, one can run a `map-reduce` task on the all
+of wikipedia to find out common words (wikipedia provides a monthly dump
+of its database).
 
 ### Android/iOS/Chrome/Firefox applications
 
@@ -271,6 +277,7 @@ hard to port it to various other platforms too.
 ## Author
 
 [Anju Suryawanshi](http://anjusuryawanshi.com/)
+
 [github](https://github.com/anjusuryawanshi)
 
 ## License
