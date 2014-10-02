@@ -1,0 +1,30 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{qtree}
+\newcommand*\circA[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,fill=black!10,minimum size=1.4em,inner sep=2pt] (char) {#1};}}
+\newcommand*\circB[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,fill=black!30,minimum size=1.4em,inner sep=2pt] (char) {#1};}}
+
+\title{Your Paper}
+
+\author{You}
+
+\date{\today}
+
+\begin{document}
+
+$$P_w(n) = D_k \times (1 - P_k(n)) + D_h \times h(n) + \sum\limits_{i=1}^c(\frac{P_w(n_i)}{c})$$
+
+\Tree [.\circA{a}
+        [.\circB{c}
+          [.\circA{e} \circB{d} ]
+          [.\circA{r} [.\circB{o} [.\circA{b} [.\circB{a} \circA{t} ] ] ] ] ]
+        [.\circB{d} [.\circA{m} [.\circB{i} \circA{t} ] ] ]
+      ]
+\end{document}
