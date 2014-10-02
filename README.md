@@ -108,9 +108,7 @@ follow the branch with highest depth_. This is not the case since we
 have to assume that the opponent also plays optimally. Consider this
 example:
 
-<div style="width:100%;text-align:center;">
-  <img src="https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/optimal-child.png" alt="Optimal child node selection" style="width:10%;">
-</div>
+![Optimal child node selection](https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/optimal-child.png)
 
 Let's assume the opponent plays the letter `a`. Now, as per the decision
 tree, there are two options for us to choose from, `c` or `d`. Based on
@@ -124,9 +122,7 @@ In the approach, the rule of thumb is _there is always a chance, however
 small it may be, that you will win unless you complete a word_. This is
 explained more clearly by this equation:
 
-<div style="width:100%;text-align:center;">
-  <img src="https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/equations.png" alt="Probability Equation" style="width:30%;">
-</div>
+![Probability Equation](https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/equations.png)
 
 |_Symbol_         |Definition                                                                                            |
 |-----------------|------------------------------------------------------------------------------------------------------|
@@ -171,9 +167,7 @@ will select a node `n` out of several possible candidates. One might
 argue that a opponent is more likely to select a node that will yield
 him or her victory. This can be visualized using this graph:
 
-<div style="width:100%;text-align:center;">
-  <img src="https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/chances-of-selection.png" alt="Probability of Selection" style="width:40%;">
-</div>
+![Probability of Selection](https://raw.githubusercontent.com/anjusuryawanshi/ghost/master/docs/images/chances-of-selection.png)
 
 #### Difficulty factors _D<sub>k</sub>_ and _D<sub>h</sub>_
 
