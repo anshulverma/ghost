@@ -134,7 +134,7 @@ explained more clearly by this equation:
 |_h(n)_           | _average height of node `n`_                                                                         |
 |_d(n)_           | _depth of node `n`_                                                                                  |
 |_D<sub>k</sub>_  | _difficulty level constant for opponent selecting a child based in its P<sub>k</sub>_                |
-|_D<sub>h</sub>_  | _difficulty level constant for opponent selecting a child based on its average height P<sub>k</sub>_ |
+|_D<sub>h</sub>_  | _difficulty level constant for opponent selecting a child based on its h(n)_               |
 
 #### Probability of Knowing _P<sub>k</sub>_
 
