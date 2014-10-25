@@ -21,7 +21,23 @@
 
 \LARGE{
 
-$$P_w(n) = D_k \times (1 - P_k(n)) + D_h \times h(n) + \sum\limits_{i=1}^c(\frac{P_w(n_i)}{c})$$
+$$P_w(n) = (1 - P_k(n)) + D_h \times h(n) + \sum\limits_{i=1}^c\frac{1 - P_w(n_i)}{c}$$
+
+\begin{equation}
+  P_k(n)=
+    \begin{cases}
+      1, & \text{iff}\ n \in leaf\_nodes \\
+      D_k \times d(n), & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+  h(n)=
+    \begin{cases}
+      0, & \text{iff}\ n \in leaf\_nodes \\
+      1 + \sum\limits_{i=1}^c\frac{h(n_i)}{c}, & \text{otherwise}
+    \end{cases}
+\end{equation}
 
 \Tree [.\circA{\LARGE a}
         [.\circB{c}
